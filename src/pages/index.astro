@@ -1,0 +1,33 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+
+import { db, Comment } from "astro:db";
+
+const comments = await db.select().from(Comment);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h2>Comments</h2>
+
+			{
+				comments.map(({ author, body }) => (
+					<article>
+						<p>Author: {author}</p>
+						<p>{body}</p>
+					</article>
+				))
+			}
+		</main>
+		<Footer />
+	</body>
+</html>
